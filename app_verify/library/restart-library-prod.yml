@@ -1,0 +1,39 @@
+- hosts: library
+  serial: 1
+  vars:
+    http_port: 8080
+    app: rhapsodydirectlibrary
+    version_page: "data/getVersionString.xml?developerKey=4B8C5B7B5B7B5I4H"
+
+  pre_tasks:
+
+  - name: take out of load balancer pool
+    command: ssh deploy " lbmgr -host  {{ inventory_hostname }} --port {{ http_port }} --takeout  --use-default-bleeding-time"
+    delegate_to: 127.0.0.1
+
+  tasks:
+
+#  - name: restart server
+#    command: sudo /etc/init.d/tomcat 8080 restart
+
+  - wait_for: host={{ inventory_hostname }} port={{ http_port }}
+  
+  - name: wait version page return
+    uri:
+      url: http://{{ inventory_hostname }}:{{ http_port }}/{{ app }}/{{ version_page }}
+      status_code: 200
+      register: result
+      until: result.status == 200
+      retries: 60
+      delay: 5
+    delegate_to: 127.0.0.1
+
+  - name: test
+    script: ~/release/app_verify/library {{ inventory_hostname }} 
+    delegate_to: 127.0.0.1
+  
+  post_tasks:
+
+  - name: add back to load balancer pool
+    command: ssh deploy "lbmgr -host  {{ inventory_hostname }} --port {{ http_port }} --putback"
+    delegate_to: 127.0.0.1
