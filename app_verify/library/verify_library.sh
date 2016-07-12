@@ -17,3 +17,5 @@ STATUS_CODE=$(curl --silent --output /dev/stderr --write-out "%{http_code}" "htt
 if(test $STATUS_CODE -ne 200); then
         exit 1
 fi
+
+exit 0

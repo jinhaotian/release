@@ -4,6 +4,7 @@
     http_port: 8080
     app: rhapsodydirectlibrary
     version_page: "data/getVersionString.xml?developerKey=4B8C5B7B5B7B5I4H"
+    version: 5-quest-102
 
   pre_tasks:
 
@@ -13,23 +14,46 @@
 
   tasks:
 
-#  - name: restart server
-#    command: sudo /etc/init.d/tomcat 8080 restart
+  - name: stop server
+    command: sudo /etc/init.d/tomcat 8080 stop  
 
-  - wait_for: host={{ inventory_hostname }} port={{ http_port }}
+  - name: remove old build
+    command: sudo rm -Rf /var/tom8080/webapps/{{ app }}
+
+  - name: start server
+    command: sudo /etc/init.d/tomcat 8080 restart
+
+  - command: tail -2000 /var/tom8080/logs/catalina.out
+    register: log_output
+    until: log_output.stdout.find("Ebi Initialization Complete") > -1
+    retries: 120
+    delay: 10
+
+  - wait_for: "host={{ inventory_hostname }} port={{ http_port }} delay=15"
+    delegate_to: 127.0.0.1
   
-  - name: wait version page return
+  - name: "wait version page return"
     uri:
-      url: http://{{ inventory_hostname }}:{{ http_port }}/{{ app }}/{{ version_page }}
+      url: "http://{{ inventory_hostname }}:{{ http_port }}/{{ app }}/{{ version_page }}"
       status_code: 200
       register: result
       until: result.status == 200
-      retries: 60
-      delay: 5
+      retries: 240
+      delay: 10
+    delegate_to: 127.0.0.1
+
+  - action: uri url=http://{{ inventory_hostname }}:{{ http_port }}/{{ app }}/{{ version_page }} return_content=yes
+    register: webpage
+    delegate_to: 127.0.0.1
+
+  - debug: var=webpage verbosity=2 
+
+  - action: fail
+    when: "'{{ version }}' not in webpage.content"
     delegate_to: 127.0.0.1
 
   - name: test
-    script: ~/release/app_verify/library {{ inventory_hostname }} 
+    script: ~/release/app_verify/library/verify_library.sh {{ inventory_hostname }} 
     delegate_to: 127.0.0.1
   
   post_tasks:
