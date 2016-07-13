@@ -8,7 +8,7 @@
 
   pre_tasks:
   
-  - name: Send notification message via Slack all options
+  - name: Send notification message via Slack channel
     local_action:
       module: slack
       token: T024R4HF1/B1RDDPWM7/CifLKsgIqih1bQj6VFzbvqYt
