@@ -1,0 +1,38 @@
+- hosts: deployment_lb
+  vars:
+    application_config: playlist-app-cfg
+    config_version: playlist_1_0_50_limit_50k
+    application:  playlist-app
+    version: 1.0.54
+
+  tasks:
+  - name: Send notification message via Slack all options
+    run_once: true
+    local_action:
+      module: slack
+      token: T024R4HF1/B1RDDPWM7/CifLKsgIqih1bQj6VFzbvqYt
+      msg: "Push {{ application }} config and war to  {{ deploy_environment  }} of version: {{ version }} started"
+      channel: "#platform-notification"
+      username: "Release Script"
+      link_names: 0
+      parse: 'none'
+
+  - name: push config and war out without restart server
+    command: "{{ item }}"
+    run_once: true
+    delegate_to: 127.0.0.1
+    with_items:
+    - ssh deployment-corp-1101.sea1.rhapsody.com   "release -p {{ application_config }} -t {{ deploy_environment }} -r {{ config_version }} -R --force -v -m 'Ansible Release' -Q"
+    - ssh deployment-corp-1101.sea1.rhapsody.com  "release -p {{ application }} -t {{ deploy_environment }} -r {{ version }} -R --force -v -m 'Ansible Release' -z -Q"
+
+  - name: Send notification message via Slack all options
+    run_once: true
+    local_action:
+      module: slack
+      token: T024R4HF1/B1RDDPWM7/CifLKsgIqih1bQj6VFzbvqYt
+      msg: "Push {{ application }} config and war to  {{ deploy_environment  }} of version: {{ version }} completed"
+      channel: "#platform-notification"
+      username: "Release Script"
+      link_names: 0
+      parse: 'none'
+
