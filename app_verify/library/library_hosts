@@ -1,2 +1,13 @@
+[deployment]
+platformqa-int-1201.sea2.rhapsody.com
+[deployment:vars]
+deploy_environment=int
+loadbalancer=false
+
 [library]
-rds-library-prod-12[01:15].sea2.rhapsody.com
+rds-library-int-1201.sea2.rhapsody.com
+[library:vars]
+deploy_environment=int
+loadbalancer=false
+
+
