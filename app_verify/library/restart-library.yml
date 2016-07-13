@@ -5,12 +5,21 @@
     app: rhapsodydirectlibrary
     version_page: "data/getVersionString.xml?developerKey=4B8C5B7B5B7B5I4H"
     version: 5-quest-102
+    env: int
 
   pre_tasks:
+  
 
-  - name: take out of load balancer pool
-    command: ssh deployment-corp-1101.sea1.rhapsody.com  " lbmgr -host  {{ inventory_hostname }} --port {{ http_port }} --takeout  --use-default-bleeding-time"
+  - command: "{{ item }}"
+    run_once: true
     delegate_to: 127.0.0.1
+    with_items:
+    - ssh deployment-corp-1101.sea1.rhapsody.com   "release -p rds-lib-cfg-mvn -t {{ env }} -r {{ version }} -R --force -v -m 'Ansible Release' -Q"
+    - ssh deployment-corp-1101.sea1.rhapsody.com  "release -p rds-lib-mvn -t {{ env }} -r {{ version }} -R --force -v -m 'Ansible Release' -z -Q"
+
+#  - name: take out of load balancer pool
+#    command: ssh deployment-corp-1101.sea1.rhapsody.com  " lbmgr -host  {{ inventory_hostname }} --port {{ http_port }} --takeout  --use-default-bleeding-time"
+#    delegate_to: 127.0.0.1
 
   tasks:
 
@@ -58,6 +67,16 @@
   
   post_tasks:
 
-  - name: add back to load balancer pool
-    command: ssh deployment-corp-1101.sea1.rhapsody.com  "lbmgr -host  {{ inventory_hostname }} --port {{ http_port }} --putback"
-    delegate_to: 127.0.0.1
+#  - name: add back to load balancer pool
+#    command: ssh deployment-corp-1101.sea1.rhapsody.com  "lbmgr -host  {{ inventory_hostname }} --port {{ http_port }} --putback"
+#    delegate_to: 127.0.0.1
+   
+  - name: Send notification message via Slack all options
+    local_action:
+      module: slack
+      token: T024R4HF1/B1R7RCHPX/URy46EEcXTno3gWabT04lZOR 
+      msg: "{{ inventory_hostname }} completed"
+      channel: "#platform-team"
+      username: "hjin"
+      link_names: 0
+      parse: 'none'
