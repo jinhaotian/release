@@ -1,5 +1,7 @@
 - hosts: deployment
   vars:
+    application_config: rds-lib-cfg-mvn
+    application:  rds-lib-mvn
     version: 5-quest-102
 
   tasks:
@@ -8,7 +10,7 @@
     local_action:
       module: slack
       token: T024R4HF1/B1RDDPWM7/CifLKsgIqih1bQj6VFzbvqYt
-      msg: "Push config and war to  {{ deploy_environment  }} of version: {{ version }} started"
+      msg: "Push {{ application }} config and war to  {{ deploy_environment  }} of version: {{ version }} started"
       channel: "#platform-notification"
       username: "hjin"
       link_names: 0
@@ -19,8 +21,8 @@
     run_once: true
     delegate_to: 127.0.0.1
     with_items:
-    - ssh deployment-corp-1101.sea1.rhapsody.com   "release -p rds-lib-cfg-mvn -t {{ deploy_environment }} -r {{ version }} -R --force -v -m 'Ansible Release' -Q"
-    - ssh deployment-corp-1101.sea1.rhapsody.com  "release -p rds-lib-mvn -t {{ deploy_environment }} -r {{ version }} -R --force -v -m 'Ansible Release' -z -Q"
+    - ssh deployment-corp-1101.sea1.rhapsody.com   "release -p {{ application_config }} -t {{ deploy_environment }} -r {{ version }} -R --force -v -m 'Ansible Release' -Q"
+    - ssh deployment-corp-1101.sea1.rhapsody.com  "release -p {{ application }} -t {{ deploy_environment }} -r {{ version }} -R --force -v -m 'Ansible Release' -z -Q"
 
   - name: Send notification message via Slack all options
     run_once: true
