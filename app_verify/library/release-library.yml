@@ -12,7 +12,7 @@
       token: T024R4HF1/B1RDDPWM7/CifLKsgIqih1bQj6VFzbvqYt
       msg: "Push {{ application }} config and war to  {{ deploy_environment  }} of version: {{ version }} started"
       channel: "#platform-notification"
-      username: "hjin"
+      username: "Release Script"
       link_names: 0
       parse: 'none'
 
@@ -31,7 +31,7 @@
       token: T024R4HF1/B1RDDPWM7/CifLKsgIqih1bQj6VFzbvqYt
       msg: "Push config and war to  {{ deploy_environment  }} of version: {{ version }} completed"
       channel: "#platform-notification"
-      username: "hjin"
+      username: "Release Script"
       link_names: 0
       parse: 'none'
 
