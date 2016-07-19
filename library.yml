@@ -28,11 +28,21 @@
 
   tasks:
 
-  - name: push config and war out without restart server
+  - name: push config out without restart server
     command: "{{ item }}"
     delegate_to: 127.0.0.1
     with_items:
     - ssh deployment-corp-1101.sea1.rhapsody.com   "release -p {{ application_config }} -t {{ deploy_environment }} -r {{ version }} -R --force -v -m 'Ansible Release' -Q -s {{ inventory_hostname }} "
+ 
+  - name: update config
+    command: "{{ item }}"
+    with_items:
+    - sudo sed -i 's/enable.member.playlist.switch=true/enable.member.playlist.switch=false/' /var/tom8080/conf/rds.properties 
+
+  - name: push war out without restart server
+    command: "{{ item }}"
+    delegate_to: 127.0.0.1
+    with_items:
     - ssh deployment-corp-1101.sea1.rhapsody.com  "release -p {{ application }} -t {{ deploy_environment }} -r {{ version }} -R --force -v -m 'Ansible Release' -Q -s {{ inventory_hostname }} "
 
 

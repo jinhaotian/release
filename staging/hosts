@@ -5,7 +5,7 @@ deploy_environment=prod
 loadbalancer=true
 
 [library]
-rds-library-prod-1201.sea2.rhapsody.com
+rds-library-prod-1202.sea2.rhapsody.com
 [library:vars]
 deploy_environment=prod
 loadbalancer=true
