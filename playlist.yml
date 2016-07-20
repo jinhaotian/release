@@ -7,7 +7,7 @@
     application_config: playlist-app-cfg
     config_version: playlist_us19337_v3
     application:  playlist-app
-    version: 1.0.54.2
+#    version: 1.0.54.2
 
 
   pre_tasks:
@@ -30,12 +30,22 @@
 
   tasks:
 
-  - name: push config and war out without restart server
+  - name: push config  out without restart server
     command: "{{ item }}"
     delegate_to: 127.0.0.1
     with_items:
     - ssh deployment-corp-1101.sea1.rhapsody.com   "release -p {{ application_config }} -t {{ deploy_environment }} -r {{ config_version }} -R --force -v -m 'Ansible Release' -Q -s {{ inventory_hostname }} "
-    - ssh deployment-corp-1101.sea1.rhapsody.com  "release -p {{ application }} -t {{ deploy_environment }} -r {{ version }} -R --force -v -m 'Ansible Release' -Q -s {{ inventory_hostname }} "
+
+  - name: push  war out 
+    command: ssh deployment-corp-1101.sea1.rhapsody.com  "release -p {{ application }} -t {{ deploy_environment }} -r {{ version }} -R --force -v -m 'Ansible Release' -Q -s {{ inventory_hostname }} "
+    delegate_to: 127.0.0.1
+    async: 300
+    poll: 5
+    register: release_output
+
+  - debug: var=release_output.stdout
+  
+  - pause: seconds=10
 
   - name: wait log show complete
     command: tail -30 /var/tom8080/logs/catalina.out

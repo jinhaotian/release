@@ -44,6 +44,8 @@
     delegate_to: 127.0.0.1
     with_items:
     - ssh deployment-corp-1101.sea1.rhapsody.com  "release -p {{ application }} -t {{ deploy_environment }} -r {{ version }} -R --force -v -m 'Ansible Release' -Q -s {{ inventory_hostname }} "
+    async: 300
+    poll: 5
 
 
   - name: wait log show complete
