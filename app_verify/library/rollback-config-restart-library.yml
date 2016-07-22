@@ -39,6 +39,12 @@
     - ssh deployment-corp-1101.sea1.rhapsody.com  "release -p {{ application }} -t {{ deploy_environment }} --restart  -Q -s {{ inventory_hostname }} "
     async: 300
     poll: 5
+    register: release_output
+
+  - debug: var=release_output.stdout
+
+  - pause: seconds=10
+
 
 
 
