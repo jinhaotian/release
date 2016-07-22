@@ -6,7 +6,6 @@
     version_page: "data/getVersionString.xml?developerKey=4B8C5B7B5B7B5I4H"
     application_config: rds-lib-cfg-mvn
     application:  rds-lib-mvn
-#    version: 5-quest-102
 
   pre_tasks:
   
@@ -32,7 +31,7 @@
     command: "{{ item }}"
     delegate_to: 127.0.0.1
     with_items:
-    - ssh deployment-corp-1101.sea1.rhapsody.com   "release -p {{ application_config }} -t {{ deploy_environment }} -r {{ version }} -R --force -v -m 'Ansible Release{{ comment }}' -Q -s {{ inventory_hostname }} "
+    - ssh deployment-corp-1101.sea1.rhapsody.com   "release -p {{ application_config }} -t {{ deploy_environment }} -r {{ config_version }} -R --force -v -m 'Ansible Release{{ comment }}' -Q -s {{ inventory_hostname }} "
  
   - name: update config
     command: "{{ item }}"
