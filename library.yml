@@ -39,10 +39,8 @@
     - sudo sed -i 's/enable.member.playlist.switch=true/enable.member.playlist.switch=false/' /var/tom8080/conf/rds.properties 
 
   - name: push war {{ version  }}
-    command: "{{ item }}"
+    command: ssh deployment-corp-1101.sea1.rhapsody.com  "release -p {{ application }} -t {{ deploy_environment }} -r {{ version }} -R --force -v -m 'Ansible Release {{ comment }}' -Q -s {{ inventory_hostname }}"
     delegate_to: 127.0.0.1
-    with_items:
-    - ssh deployment-corp-1101.sea1.rhapsody.com  "release -p {{ application }} -t {{ deploy_environment }} -r {{ version }} -R --force -v -m 'Ansible Release {{ comment }}' -Q -s {{ inventory_hostname }} "
     async: 300
     poll: 5
     register: release_output
