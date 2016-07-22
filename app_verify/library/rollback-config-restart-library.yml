@@ -1,18 +1,15 @@
-- hosts: playlist
+- hosts: library
   serial: 1
   vars:
     http_port: 8080
-    app: playlist
-    version_page: "version"
-    application_config: playlist-app-cfg
-#    config_version: playlist_us19337_v3
-    application:  playlist-app
-#    version: 1.0.54.2
-
+    app: rhapsodydirectlibrary
+    version_page: "data/getVersionString.xml?developerKey=4B8C5B7B5B7B5I4H"
+    application_config: rds-lib-cfg-mvn
+    application:  rds-lib-mvn
 
   pre_tasks:
   
-  - name: Send notification message via Slack all options
+  - name: Send notification message via Slack channel
     local_action:
       module: slack
       token: T024R4HF1/B1RDDPWM7/CifLKsgIqih1bQj6VFzbvqYt
@@ -30,27 +27,25 @@
 
   tasks:
 
-  - name: push config  out without restart server
+  - name: update config
+    command: "{{ item }}"
+    with_items:
+    - sudo sed -i 's/enable.member.playlist.switch=true/enable.member.playlist.switch=false/' /var/tom8080/conf/rds.properties 
+
+  - name: restart server
     command: "{{ item }}"
     delegate_to: 127.0.0.1
     with_items:
-    - ssh deployment-corp-1101.sea1.rhapsody.com   "release -p {{ application_config }} -t {{ deploy_environment }} -r {{ config_version }} -R --force -v -m 'Ansible Release {{ comment }}' -Q -s {{ inventory_hostname }} "
-
-  - name: push  war out 
-    command: ssh deployment-corp-1101.sea1.rhapsody.com  "release -p {{ application }} -t {{ deploy_environment }} -r {{ version }} -R --force -v -m 'Ansible Release {{ comment }}' -Q -s {{ inventory_hostname }} "
-    delegate_to: 127.0.0.1
+    - ssh deployment-corp-1101.sea1.rhapsody.com  "release -p {{ application }} -t {{ deploy_environment }} --restart  -Q -s {{ inventory_hostname }} "
     async: 300
     poll: 5
-    register: release_output
 
-  - debug: var=release_output.stdout
-  
-  - pause: seconds=10
+
 
   - name: wait log show complete
-    command: tail -30 /var/tom8080/logs/catalina.out
+    command: tail -2000 /var/tom8080/logs/catalina.out
     register: log_output
-    until: log_output.stdout.find("Server startup in") > -1
+    until: log_output.stdout.find("Ebi Initialization Complete") > -1
     retries: 120
     delay: 10
 
@@ -79,7 +74,7 @@
     delegate_to: 127.0.0.1
 
   - name: call api to verify
-    script: ~/release/library/verify_playlist.sh {{ inventory_hostname }} 
+    script: ~/release/library/verify_library.sh {{ inventory_hostname }} 
     delegate_to: 127.0.0.1
   
   post_tasks:
