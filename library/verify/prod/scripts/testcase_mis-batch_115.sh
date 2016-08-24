@@ -5,11 +5,11 @@ server=$2
 port=$3
 war_file_name=$4
 
-HEADER=<%= @header %>
-DATA=<%= @data %>
-method=<%= @method %>
-url="<%= @url %>"
-http_code=<%= @http_code%>
+HEADER= -H "Authorization: Basic bWlzOm1pcw=="
+DATA=
+method=GET
+url="$protocol://$server:$port/$war_file_name/messageServices/push/user/DD68207C3638D3EDE040960A3903226B"
+http_code=200
 
 
 
@@ -34,7 +34,7 @@ fi
 echo "Response Code:" $http_code
 echo "Response Body:" $body
 
-if(test $http_code -ne <%= @http_code%>); then
+if(test $http_code -ne 200); then
         exit 1
 fi
 exit 0

@@ -5,11 +5,11 @@ server=$2
 port=$3
 war_file_name=$4
 
-HEADER=<%= @header %>
-DATA=<%= @data %>
-method=<%= @method %>
-url="<%= @url %>"
-http_code=<%= @http_code%>
+HEADER= -H "Authorization: Basic bWFzOm0mdyM2NyUkcw==" -H "Content-Type: application/json"
+DATA={"msisdn":"2067078188"}
+method=POST
+url="$protocol://$server:$port/$war_file_name/v1/subscriptions/current-product/billing-partners/tmobile"
+http_code=404
 
 
 
@@ -34,7 +34,7 @@ fi
 echo "Response Code:" $http_code
 echo "Response Body:" $body
 
-if(test $http_code -ne <%= @http_code%>); then
+if(test $http_code -ne 404); then
         exit 1
 fi
 exit 0

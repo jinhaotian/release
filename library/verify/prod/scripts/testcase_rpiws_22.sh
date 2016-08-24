@@ -5,11 +5,11 @@ server=$2
 port=$3
 war_file_name=$4
 
-HEADER=<%= @header %>
-DATA=<%= @data %>
-method=<%= @method %>
-url="<%= @url %>"
-http_code=<%= @http_code%>
+HEADER= -H "Authorization: Basic cnBpbWV0cm9wY3M6bWV0cm90em0=" -H "Content-Type: application/xml;charset=ISO-8859-1"
+DATA=
+method=POST
+url="$protocol://$server:$port/$war_file_name/v1/user/partner/WOSEJFNRYX4125253801370/userGuid/A8F3FD41CBC400B6E0430A96033200B6"
+http_code=200
 
 
 
@@ -34,7 +34,7 @@ fi
 echo "Response Code:" $http_code
 echo "Response Body:" $body
 
-if(test $http_code -ne <%= @http_code%>); then
+if(test $http_code -ne 200); then
         exit 1
 fi
 exit 0

@@ -4,10 +4,14 @@ protocol=$1
 server=$2
 port=$3
 war_file_name=$4
-method=$5
-url="$protocol://$server:$port/$war_file_name/data/getTracksInLibrary.xml?developerKey=4B8C5B7B5B7B5I4H&cobrandId=40134&logon=qa_4x26fz@rhapsody.lan&password=rhap123&end=3&start=0"
-HEADER
-DATA
+
+HEADER=
+DATA=
+method=GET
+url="$protocol://$server:$port/$war_file_name/vivo"
+http_code=200
+
+
 
 command="curl -X $method -sw '%{http_code}' '$url' $HEADER"
 
@@ -34,4 +38,3 @@ if(test $http_code -ne 200); then
         exit 1
 fi
 exit 0
-

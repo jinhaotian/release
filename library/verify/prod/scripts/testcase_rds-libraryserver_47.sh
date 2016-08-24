@@ -5,10 +5,12 @@ server=$2
 port=$3
 war_file_name=$4
 
-HEADER=""
-DATA=""
+HEADER= -H "x-rds-devkey: 4B8C5B7B5B7B5I4H" -H "x-rds-login: xlirhapus@yahoo.com" -H "x-rds-authentication: 111111" -H "Content-Type: application/xml" -H "x-rds-cobrand: 40134"
+DATA=
 method=GET
-url="$protocol://$server:$port/$war_file_name/profiles/UserProfile/users/D12AD340FDA26C1BE040960A38033EA2"
+url="$protocol://$server:$port/$war_file_name/v1/users/D12AD340FDA26C1BE040960A38033EA2/tracks/tags?catalog=101&filterRightsKey=0&start=0&count=10"
+http_code=200
+
 
 
 command="curl -X $method -sw '%{http_code}' '$url' $HEADER"

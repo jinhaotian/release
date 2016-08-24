@@ -5,11 +5,11 @@ server=$2
 port=$3
 war_file_name=$4
 
-HEADER=<%= @header %>
-DATA=<%= @data %>
-method=<%= @method %>
-url="<%= @url %>"
-http_code=<%= @http_code%>
+HEADER= -H "x-rds-devkey: 4B8C5B7B5B7B5I4H"
+DATA=
+method=GET
+url="$protocol://$server:$port/$war_file_name/user/recommendation/tracks/DD67C892A1793F6BE040960A39031314/from/7F4FF3897932406CE043C0A87FBE406C"
+http_code=200
 
 
 
@@ -34,7 +34,7 @@ fi
 echo "Response Code:" $http_code
 echo "Response Body:" $body
 
-if(test $http_code -ne <%= @http_code%>); then
+if(test $http_code -ne 200); then
         exit 1
 fi
 exit 0
