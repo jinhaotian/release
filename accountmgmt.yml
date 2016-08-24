@@ -78,11 +78,17 @@
     delegate_to: 127.0.0.1
 
   - name: call api to verify
-    script: ~/release/library/verify/prod/scripts/rds-accountmgmt.sh http {{ inventory_hostname }} 8080  {{ app  }}
+    script: ~/release/library/verify/prod/scripts/testcase_rds-accountmgmt_15.sh http {{ inventory_hostname }} 8080  {{ app  }}
     delegate_to: 127.0.0.1
   
+  - name: call api to verify
+    script: ~/release/library/verify/prod/scripts/testcase_rds-accountmgmt_41.sh http {{ inventory_hostname }} 8080  {{ app  }}
+    delegate_to: 127.0.0.1
 
-  
+  - name: call api to verify
+    script: ~/release/library/verify/prod/scripts/testcase_rds-accountmgmt_42 http {{ inventory_hostname }} 8080  {{ app  }}
+    delegate_to: 127.0.0.1
+
   post_tasks:
 
   - name: add back to load balancer pool
