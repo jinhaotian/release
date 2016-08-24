@@ -37,4 +37,11 @@ echo "Response Body:" $body
 if(test $http_code -ne 200); then
         exit 1
 fi
+
+pattern=".*{"id":"g.123456789","topListeners":[{"guid":"TEST-GUID-1234567890123456789012","playCount":450}]}.*" 
+
+if [[ !($body =~ $pattern) ]]; then
+     exit 1
+fi
+
 exit 0

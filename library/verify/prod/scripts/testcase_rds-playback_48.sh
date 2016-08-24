@@ -37,4 +37,11 @@ echo "Response Body:" $body
 if(test $http_code -ne 200); then
         exit 1
 fi
+
+pattern=".*"id":"Tra.10521032","resultCode":0,"right":32818.*" 
+
+if [[ !($body =~ $pattern) ]]; then
+     exit 1
+fi
+
 exit 0

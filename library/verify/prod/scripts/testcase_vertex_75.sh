@@ -37,4 +37,11 @@ echo "Response Body:" $body
 if(test $http_code -ne 200); then
         exit 1
 fi
+
+pattern=".*http://www.vertexinc.com/oseries/services/CalculateTax60.*" 
+
+if [[ !($body =~ $pattern) ]]; then
+     exit 1
+fi
+
 exit 0

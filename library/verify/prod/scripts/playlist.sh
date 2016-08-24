@@ -1,0 +1,2 @@
+#!/bin/sh
+current_dir=`dirname $0`  && $current_dir/testcase_playlist_146.sh $1 $2 $3 $4  && $current_dir/testcase_playlist_147.sh $1 $2 $3 $4  && $current_dir/testcase_playlist_148.sh $1 $2 $3 $4  && $current_dir/testcase_playlist_149.sh $1 $2 $3 $4 

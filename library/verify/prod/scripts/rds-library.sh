@@ -1,0 +1,2 @@
+#!/bin/sh
+current_dir=`dirname $0`  && $current_dir/testcase_rds-library_9.sh $1 $2 $3 $4  && $current_dir/testcase_rds-library_10.sh $1 $2 $3 $4  && $current_dir/testcase_rds-library_45.sh $1 $2 $3 $4 

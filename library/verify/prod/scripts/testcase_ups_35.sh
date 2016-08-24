@@ -37,4 +37,11 @@ echo "Response Body:" $body
 if(test $http_code -ne 200); then
         exit 1
 fi
+
+pattern=".*"guid":"D12AD340FDA26C1BE040960A38033EA2".*" 
+
+if [[ !($body =~ $pattern) ]]; then
+     exit 1
+fi
+
 exit 0

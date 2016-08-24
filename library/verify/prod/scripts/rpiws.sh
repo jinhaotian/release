@@ -1,0 +1,2 @@
+#!/bin/sh
+current_dir=`dirname $0`  && $current_dir/testcase_rpiws_22.sh $1 $2 $3 $4  && $current_dir/testcase_rpiws_60.sh $1 $2 $3 $4  && $current_dir/testcase_rpiws_61.sh $1 $2 $3 $4  && $current_dir/testcase_rpiws_103.sh $1 $2 $3 $4 

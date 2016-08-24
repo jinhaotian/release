@@ -37,4 +37,6 @@ echo "Response Body:" $body
 if(test $http_code -ne 200); then
         exit 1
 fi
+
+
 exit 0

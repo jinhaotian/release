@@ -37,4 +37,11 @@ echo "Response Body:" $body
 if(test $http_code -ne 404); then
         exit 1
 fi
+
+pattern=".*{"reasonKey":"10001","reasonMessage":"ERROR_CUSTOMER_DOESNT_EXIST"}.*" 
+
+if [[ !($body =~ $pattern) ]]; then
+     exit 1
+fi
+
 exit 0
