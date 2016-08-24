@@ -10,6 +10,12 @@ rds-library-int-1201.sea2.rhapsody.com
 deploy_environment=int
 loadbalancer=false
 
+[accountmgmt]
+rds-accountmgmt-int-12[01:02].sea2.rhapsody.com
+[accountmgmt:vars]
+deploy_environment=int
+loadbalancer=false
+
 [deployment_lb]
 platformqa-int-1201.sea2.rhapsody.com
 [deployment:vars]

@@ -10,6 +10,13 @@ rds-library-test-1201.sea2.rhapsody.com
 deploy_environment=test
 loadbalancer=false
 
+[accountmgmt]
+rds-accountmgmt-test-1201.sea2.rhapsody.com
+[accountmgmt:vars]
+deploy_environment=test
+loadbalancer=false
+
+
 [deployment_lb]
 platformqa-int-1201.sea2.rhapsody.com
 [deployment:vars]

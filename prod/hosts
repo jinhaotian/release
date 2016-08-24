@@ -10,6 +10,12 @@ rds-library-prod-12[01:15].sea2.rhapsody.com
 deploy_environment=prod
 loadbalancer=true
 
+[accountmgmt]
+rds-accountmgmt-prod-12[01:12].sea2.rhapsody.com
+[accountmgmt:vars]
+deploy_environment=prod
+loadbalancer=true
+
 [deployment_lb]
 platformqa-prod-1201.sea2.rhapsody.com
 [deployment:vars]
