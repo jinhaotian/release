@@ -28,3 +28,9 @@ playlist-test-1201.sea2.rhapsody.com
 [playlist:vars]
 deploy_environment=test
 loadbalancer=false
+
+[rpiws]
+rpiws-int-12[01:03].sea2.rhapsody.com
+[rpiws:vars]
+deploy_environment=test
+loadbalancer=false
