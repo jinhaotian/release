@@ -54,6 +54,8 @@
     retries: 120
     delay: 10
 
+  - pause: seconds=10
+
   - name: wait port {{ http_port }} open
     wait_for: "host={{ inventory_hostname }} port={{ http_port }} delay=15"
     delegate_to: 127.0.0.1
@@ -65,7 +67,7 @@
       register: result
       until: result.status == 200
       retries: 240
-      delay: 10
+      delay: 20
     delegate_to: 127.0.0.1
 
   - action: uri url=http://{{ inventory_hostname }}:{{ http_port }}/{{ app }}/{{ version_page }} return_content=yes

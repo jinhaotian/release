@@ -64,7 +64,7 @@
       register: result
       until: result.status == 200
       retries: 240
-      delay: 10
+      delay: 20
     delegate_to: 127.0.0.1
 
   - action: uri url=http://{{ inventory_hostname }}:{{ http_port }}/{{ app }}/{{ version_page }} return_content=yes
@@ -78,16 +78,10 @@
     delegate_to: 127.0.0.1
 
   - name: call api to verify
-    script: ~/release/library/verify/prod/scripts/testcase_rds-accountmgmt_15.sh http {{ inventory_hostname }} 8080  {{ app  }}
+    script: ~/release/library/verify/prod/scripts/accountmgmt.sh http {{ inventory_hostname }} 8080  {{ app  }}
     delegate_to: 127.0.0.1
   
-  - name: call api to verify
-    script: ~/release/library/verify/prod/scripts/testcase_rds-accountmgmt_41.sh http {{ inventory_hostname }} 8080  {{ app  }}
-    delegate_to: 127.0.0.1
 
-  - name: call api to verify
-    script: ~/release/library/verify/prod/scripts/testcase_rds-accountmgmt_42.sh http {{ inventory_hostname }} 8080  {{ app  }}
-    delegate_to: 127.0.0.1
 
   post_tasks:
 
