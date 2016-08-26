@@ -50,7 +50,7 @@
   - name: wait log show complete
     command: tail -500 /var/tom8080/logs/catalina.out
     register: log_output
-    until: log_output.stdout.find("Initializing.*8080") > -1
+    until: log_output.stdout.find("Initializing") > -1
     retries: 120
     delay: 10
 
