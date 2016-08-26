@@ -27,3 +27,10 @@ playlist-int-12[01:02].sea2.rhapsody.com
 [playlist:vars]
 deploy_environment=int
 loadbalancer=true
+
+[rpiws]
+rpiws-int-12[01:02].sea2.rhapsody.com
+[rpiws:vars]
+deploy_environment=int
+loadbalancer=true
+
