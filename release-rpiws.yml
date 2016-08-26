@@ -80,7 +80,7 @@
 
   - name: call api to verify
     script: ~/release/library/verify/prod/scripts/{{ test_name }}.sh http {{ inventory_hostname }} 8080  {{ app  }}
-    when: "{{ deploy_environment }}" == "prod"
+    when: {{ deploy_environment }} == "prod"
     delegate_to: 127.0.0.1
   
 
@@ -88,7 +88,7 @@
 
   - name: add back to load balancer pool
     command: ssh deployment-corp-1101.sea1.rhapsody.com  "lbmgr -host  {{ inventory_hostname }} --port {{ http_port }} --putback"
-    when: loadbalancer != "false"
+    when: {{ loadbalancer }} != "false"
     delegate_to: 127.0.0.1
    
   - name: Send notification message via Slack all options
