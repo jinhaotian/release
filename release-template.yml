@@ -88,7 +88,7 @@
 
   - name: add back to load balancer pool
     command: ssh deployment-corp-1101.sea1.rhapsody.com  "lbmgr -host  {{ inventory_hostname }} --port {{ http_port }} --putback"
-    when: {{ loadbalancer }} != "false"
+#    when: {{ loadbalancer }} != "false"
     delegate_to: 127.0.0.1
    
   - name: Send notification message via Slack all options
