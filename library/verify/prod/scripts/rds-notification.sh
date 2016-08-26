@@ -1,2 +1,0 @@
-#!/bin/sh
-current_dir=`dirname $0`  && $current_dir/testcase_rds-notification_19.sh $1 $2 $3 $4  && $current_dir/testcase_rds-notification_56.sh $1 $2 $3 $4  && $current_dir/testcase_rds-notification_57.sh $1 $2 $3 $4 

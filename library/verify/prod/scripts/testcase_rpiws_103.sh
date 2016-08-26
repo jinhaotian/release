@@ -5,21 +5,26 @@ server=$2
 port=$3
 war_file_name=$4
 
-HEADER= -H "Authorization: Basic bWFzOm0mdyM2NyUkcw==" -H "Content-Type: application/json"
-DATA={"msisdn":"2067078188"}
+DATA={\"msisdn\":\"2067078188\"}
 method=POST
 url="$protocol://$server:$port/$war_file_name/v1/subscriptions/current-product/billing-partners/tmobile"
 http_code=404
 
+u=$url
+
+echo $u
 
 
-command="curl -X $method -sw '%{http_code}' '$url' $HEADER"
-
+command='curl -X POST -sw "%{http_code}"   -H "Authorization: Basic bWFzOm0mdyM2NyUkcw==" -H "Content-Type: application/json" ' 
+command="$command \"$u\""
 if [ 'POST' = "$method" ]; then
-	 command="curl -X $method -sw '%{http_code}' '$url' $HEADER -d $DATA";
+#	 command='curl -X POST  -sw "%{http_code}"  -H "Authorization: Basic bWFzOm0mdyM2NyUkcw==" -H "Content-Type: application/json"  -d {\"msisdn\":\"2067078188\"}';
+         command="$command -d '{\"msisdn\":\"2067078188\"}'"
+#         command="$command \"$u\""
 fi
 	
 
+echo $command
 echo eval $command
 res=$(eval $command)
 
@@ -38,10 +43,12 @@ if(test $http_code -ne 404); then
         exit 1
 fi
 
-pattern=".*{"reasonKey":"10001","reasonMessage":"ERROR_CUSTOMER_DOESNT_EXIST"}.*" 
+pattern='{"reasonKey":"10001","reasonMessage":"ERROR_CUSTOMER_DOESNT_EXIST"}' 
 
-if [[ !($body =~ $pattern) ]]; then
+if [[ !($body == *"$pattern"*) ]];then
+     echo "Body Not  Matched"
      exit 1
 fi
 
+ 
 exit 0

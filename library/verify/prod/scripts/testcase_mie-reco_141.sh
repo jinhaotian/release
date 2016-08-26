@@ -5,21 +5,26 @@ server=$2
 port=$3
 war_file_name=$4
 
-HEADER= -H "x-rds-devkey: 4B8C5B7B5B7B5I4H"
 DATA=
 method=GET
 url="$protocol://$server:$port/$war_file_name/user/recommendation/DD67C892A1793F6BE040960A39031314?count=5&overlap_count=5&content=artists,genres"
 http_code=200
 
+u=$url
+
+echo $u
 
 
-command="curl -X $method -sw '%{http_code}' '$url' $HEADER"
-
+command='curl -X GET -sw "%{http_code}"   -H "x-rds-devkey: 4B8C5B7B5B7B5I4H" ' 
+command="$command \"$u\""
 if [ 'POST' = "$method" ]; then
-	 command="curl -X $method -sw '%{http_code}' '$url' $HEADER -d $DATA";
+#	 command='curl -X GET  -sw "%{http_code}"  -H "x-rds-devkey: 4B8C5B7B5B7B5I4H"  -d ';
+         command="$command -d ''"
+#         command="$command \"$u\""
 fi
 	
 
+echo $command
 echo eval $command
 res=$(eval $command)
 
@@ -38,10 +43,12 @@ if(test $http_code -ne 200); then
         exit 1
 fi
 
-pattern=".*guid.*" 
+pattern='guid' 
 
-if [[ !($body =~ $pattern) ]]; then
+if [[ !($body == *"$pattern"*) ]];then
+     echo "Body Not  Matched"
      exit 1
 fi
 
+ 
 exit 0

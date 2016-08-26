@@ -1,2 +1,0 @@
-#!/bin/sh
-current_dir=`dirname $0`  && $current_dir/testcase_rds-playbackserver_50.sh $1 $2 $3 $4  && $current_dir/testcase_rds-playbackserver_99.sh $1 $2 $3 $4  && $current_dir/testcase_rds-playbackserver_143.sh $1 $2 $3 $4 

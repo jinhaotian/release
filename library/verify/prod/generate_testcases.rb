@@ -19,6 +19,12 @@ for index in 1...lines.length do
    type = fields[7][1,fields[7].length-2].intern
    t_value = fields[6][1,fields[6].length-2]
    app_name =   fields[8][1,fields[8].length-2].intern
+
+   if(app_name.match(/^rds/)) then
+	app_name = app_name[4..-1]
+#        puts app_name
+   end
+   
    http_code = fields[3][1,fields[3].length-2].intern
    expected =  fields[1][1,fields[1].length-2]
    #puts expected 
@@ -69,20 +75,34 @@ class BValues
 end
 
 for index in 1...testcases.length do
+  data =  "#{testcases[index][:post_data]}";
+  
+  if(testcases[index][:method].eql? :POST) then
+      if(testcases[index][:post_data].nil? ) then
+         puts "Wrong Data AT #{testcases[index][:id]}"
+         next
+      end
+  end 
  
-  vars = BValues.new(testcases[index][:header],testcases[index][:url],testcases[index][:method],testcases[index][:post_data],testcases[index][:http_code],testcases[index][:expected])
+  data = data.gsub!('"','\\"') 
+  exp = "#{testcases[index][:expected]}"
+  #exp = exp.gsub!("'","\\'")
+  #puts data
+  vars = BValues.new(testcases[index][:header],"#{testcases[index][:url]}",testcases[index][:method],data,testcases[index][:http_code],exp)
   bind  = vars.get_binding;
   #puts vars
   template = File.read("./verify_template.erb")
   template = Erubis::Eruby.new(template)
   result = template.result(bind)
+  
+ 
  # puts output = result;
-  File.write("./scripts/testcase_#{testcases[index][:app_name]}_#{testcases[index][:id]}.sh", result)
-  command = apps[testcases[index][:app_name]];
-  command = "#{command} && $current_dir/testcase_#{testcases[index][:app_name]}_#{testcases[index][:id]}.sh $1 $2 $3 $4 "
-  apps.store(testcases[index][:app_name],command)
+  File.write("./scripts/testcase_#{testcases[index][:app_name]}_#{testcases[index][:id]}.sh", "#{result} \nexit 0")
+  command = apps[testcases[index][:app_name]]
+  command ="#{command}#{result} \n"
+  apps.store(testcases[index][:app_name],"#{command}")
 end
 
 apps.each do |key, value|
-  File.write("./scripts/#{key}.sh","#{value}");
+  File.write("./scripts/#{key}.sh","#{value} \n exit 0");
 end

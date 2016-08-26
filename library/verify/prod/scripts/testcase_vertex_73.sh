@@ -5,21 +5,26 @@ server=$2
 port=$3
 war_file_name=$4
 
-HEADER= -H "SOAPAction: """ -H "Content-Type: text/xml;charset=UTF-8"
-DATA=<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:dom="http://dom.w3c.org">   <soapenv:Header/>   <soapenv:Body>      <dom:inDoc>hello</dom:inDoc>   </soapenv:Body></soapenv:Envelope>
+DATA=<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:dom=\"http://dom.w3c.org\">   <soapenv:Header/>   <soapenv:Body>      <dom:inDoc>hello</dom:inDoc>   </soapenv:Body></soapenv:Envelope>
 method=POST
 url="$protocol://$server:$port/$war_file_name/services/EchoDoc"
 http_code=200
 
+u=$url
+
+echo $u
 
 
-command="curl -X $method -sw '%{http_code}' '$url' $HEADER"
-
+command='curl -X POST -sw "%{http_code}"   -H "SOAPAction: """ -H "Content-Type: text/xml;charset=UTF-8" ' 
+command="$command \"$u\""
 if [ 'POST' = "$method" ]; then
-	 command="curl -X $method -sw '%{http_code}' '$url' $HEADER -d $DATA";
+#	 command='curl -X POST  -sw "%{http_code}"  -H "SOAPAction: """ -H "Content-Type: text/xml;charset=UTF-8"  -d <soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:dom=\"http://dom.w3c.org\">   <soapenv:Header/>   <soapenv:Body>      <dom:inDoc>hello</dom:inDoc>   </soapenv:Body></soapenv:Envelope>';
+         command="$command -d '<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:dom=\"http://dom.w3c.org\">   <soapenv:Header/>   <soapenv:Body>      <dom:inDoc>hello</dom:inDoc>   </soapenv:Body></soapenv:Envelope>'"
+#         command="$command \"$u\""
 fi
 	
 
+echo $command
 echo eval $command
 res=$(eval $command)
 
@@ -38,10 +43,12 @@ if(test $http_code -ne 200); then
         exit 1
 fi
 
-pattern=".*hello.*" 
+pattern='hello' 
 
-if [[ !($body =~ $pattern) ]]; then
+if [[ !($body == *"$pattern"*) ]];then
+     echo "Body Not  Matched"
      exit 1
 fi
 
+ 
 exit 0
