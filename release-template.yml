@@ -50,7 +50,7 @@
   - name: wait log show complete
     command: tail -500 /var/tom8080/logs/catalina.out
     register: log_output
-    until: log_output.stdout.find("Initializing.*8080") >-1
+    until: log_output.stdout.find("Initializing.*8080") > -1
     retries: 120
     delay: 10
 
@@ -80,7 +80,7 @@
 
   - name: call api to verify
     script: ~/release/library/verify/prod/scripts/{{ test_name }}.sh http {{ inventory_hostname }} 8080  {{ app  }}
-    when: {{ deploy_environment }} = 'prod'
+    when: {{ deploy_environment }} == "prod"
     delegate_to: 127.0.0.1
   
 
