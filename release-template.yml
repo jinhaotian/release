@@ -80,7 +80,7 @@
 
   - name: call api to verify
     script: ~/release/library/verify/prod/scripts/{{ test_name }}.sh http {{ inventory_hostname }} 8080  {{ app  }}
-    when: {{ deploy_environment }} == "prod"
+    when: "{{ deploy_environment }}" == "prod"
     delegate_to: 127.0.0.1
   
 
