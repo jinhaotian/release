@@ -4,6 +4,9 @@ platformqa-int-1201.sea2.rhapsody.com
 deploy_environment=test
 loadbalancer=false
 
+[all:vars]
+maven_repo:
+
 [library]
 rds-library-test-1201.sea2.rhapsody.com
 [library:vars]
@@ -46,4 +49,4 @@ rpiws
 mis
 
 [ecomm:vars]
-maven_repo=http://maven01.internal.rhapsody.com/nexus/content/repositories/releases
+maven_repo=http://maven01.internal.rhapsody.com/nexus/content/repositories/snapshots

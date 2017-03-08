@@ -6,7 +6,7 @@ server=$2
 port=$3
 war_file_name=$4
 
-DATA=<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:sub=\"http://maps.real.com/rcs/subscription\">   <soapenv:Header/>   <soapenv:Body>      <sub:GetCurrentSubscriptionRequest>         <sub:UserGuid>D12AD340FDA26C1BE040960A38033EA2</sub:UserGuid>         <sub:Cobrand>40134</sub:Cobrand>      </sub:GetCurrentSubscriptionRequest>   </soapenv:Body></soapenv:Envelope>
+DATA="<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:sub=\"http://maps.real.com/rcs/subscription\">   <soapenv:Header/>   <soapenv:Body>      <sub:GetCurrentSubscriptionRequest>         <sub:UserGuid>D12AD340FDA26C1BE040960A38033EA2</sub:UserGuid>         <sub:Cobrand>40134</sub:Cobrand>      </sub:GetCurrentSubscriptionRequest>   </soapenv:Body></soapenv:Envelope>"
 method=POST
 url="$protocol://$server:$port/$war_file_name/docservices"
 http_code=200
@@ -59,7 +59,7 @@ server=$2
 port=$3
 war_file_name=$4
 
-DATA=<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:sub=\"http://maps.real.com/rcs/subscription\">   <soapenv:Header/>   <soapenv:Body>      <sub:IsConsumerEligibleForFreeTrialRequest>         <sub:UserGuid>D12AD340FDA26C1BE040960A38033EA2</sub:UserGuid>         <sub:Cobrand>40134</sub:Cobrand>      </sub:IsConsumerEligibleForFreeTrialRequest>   </soapenv:Body></soapenv:Envelope>
+DATA="<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:sub=\"http://maps.real.com/rcs/subscription\">   <soapenv:Header/>   <soapenv:Body>      <sub:IsConsumerEligibleForFreeTrialRequest>         <sub:UserGuid>D12AD340FDA26C1BE040960A38033EA2</sub:UserGuid>         <sub:Cobrand>40134</sub:Cobrand>      </sub:IsConsumerEligibleForFreeTrialRequest>   </soapenv:Body></soapenv:Envelope>"
 method=POST
 url="$protocol://$server:$port/$war_file_name/docservices"
 http_code=200
